@@ -17,7 +17,7 @@ Sistema web para la gestión de empleados con autenticación JWT, CRUD completo,
 
 ---
 
-## Inicio rápido (recomendado)
+## Inicio rápido
 
 > Requisito: tener **Docker Desktop** instalado y corriendo.
 
@@ -26,14 +26,14 @@ Sistema web para la gestión de empleados con autenticación JWT, CRUD completo,
 git clone https://github.com/201602569/Employee-management-tech-assesment-niu.git
 cd Employee-management-tech-assesment-niu
 
-# 2. Configurar variables de entorno
+# 2. Copiar variables de entorno (valores demo ya incluidos)
 cp .env.example .env
 
 # 3. Levantar todo con un solo comando
 docker compose up --build -d
 ```
 
-El sistema ejecuta automáticamente las migraciones y seeds al iniciar.
+El sistema ejecuta automáticamente las migraciones y seeds al iniciar. En 1-2 minutos todos los servicios estarán listos.
 
 | Servicio | URL |
 |----------|-----|
@@ -45,10 +45,10 @@ El sistema ejecuta automáticamente las migraciones y seeds al iniciar.
 
 ## Credenciales demo
 
-| Rol | Correo | Contraseña |
-|-----|--------|-----------|
-| Admin | admin@demo.com | Admin1234! |
-| Viewer | viewer@demo.com | Viewer1234! |
+| Rol | Correo | Contraseña | Permisos |
+|-----|--------|-----------|----------|
+| Admin | admin@demo.com | Admin1234! | CRUD completo |
+| Viewer | viewer@demo.com | Viewer1234! | Solo lectura |
 
 ---
 
@@ -65,21 +65,23 @@ El sistema ejecuta automáticamente las migraciones y seeds al iniciar.
 │   ├── migrations/           # Esquema de BD
 │   ├── seeders/              # Datos demo
 │   ├── models/               # Modelos Sequelize
-│   ├── Dockerfile
-│   └── .env.example
+│   ├── entrypoint.sh         # Auto-migración + seed
+│   └── Dockerfile
 ├── frontend/                 # SPA React
-│   └── src/
-│       ├── api/              # Cliente HTTP (axios)
-│       ├── components/       # Componentes reutilizables
-│       ├── context/          # AuthContext
-│       ├── hooks/            # useDebounce
-│       └── pages/            # Login, Employees, Dashboard
+│   ├── src/
+│   │   ├── api/              # Cliente HTTP (axios)
+│   │   ├── components/       # Componentes reutilizables
+│   │   ├── context/          # AuthContext
+│   │   ├── hooks/            # useDebounce
+│   │   └── pages/            # Login, Dashboard, Employees, Catalogs
+│   ├── nginx.conf
+│   └── Dockerfile
 ├── docs/
-│   └── ER-diagram.md         # Diagrama entidad-relación
+│   └── ER-diagram.png        # Diagrama entidad-relación
 ├── .github/
 │   └── workflows/ci.yml      # Pipeline CI/CD
 ├── docker-compose.yml
-└── .env.example
+└── .env.example              # Variables con valores demo listos para usar
 ```
 
 ---
@@ -95,7 +97,7 @@ El sistema ejecuta automáticamente las migraciones y seeds al iniciar.
 ```bash
 cd backend
 cp .env.example .env
-# Editar .env con tus credenciales de MySQL
+# Editar .env: cambiar DB_HOST=localhost y ajustar credenciales de tu MySQL local
 
 npm install
 npm run migrate     # Crea las tablas
@@ -117,15 +119,22 @@ npm run dev         # Puerto 5173
 
 La documentación completa con ejemplos está disponible en **Swagger UI**: `http://localhost:3000/api-docs`
 
-| Método | Endpoint | Descripción | Auth |
-|--------|----------|-------------|------|
+| Método | Endpoint | Descripción | Rol requerido |
+|--------|----------|-------------|---------------|
 | POST | /api/auth/login | Iniciar sesión (JWT 15min) | — |
-| GET | /api/employees | Listar con paginación y filtros | ✅ |
-| POST | /api/employees | Crear empleado | ✅ |
-| PUT | /api/employees/:id | Actualizar empleado | ✅ |
-| DELETE | /api/employees/:id | Soft delete | ✅ |
-| GET | /api/departments | Listar departamentos | ✅ |
-| GET | /api/stats | Métricas del dashboard | ✅ |
+| GET | /api/employees | Listar con paginación y filtros | cualquiera |
+| POST | /api/employees | Crear empleado | admin |
+| PUT | /api/employees/:id | Actualizar empleado | admin |
+| DELETE | /api/employees/:id | Soft delete | admin |
+| GET | /api/departments | Listar departamentos | cualquiera |
+| POST | /api/departments | Crear departamento | admin |
+| PUT | /api/departments/:id | Actualizar departamento | admin |
+| DELETE | /api/departments/:id | Eliminar departamento | admin |
+| GET | /api/roles | Listar puestos | cualquiera |
+| POST | /api/roles | Crear puesto | admin |
+| PUT | /api/roles/:id | Actualizar puesto | admin |
+| DELETE | /api/roles/:id | Eliminar puesto | admin |
+| GET | /api/stats | Métricas del dashboard | cualquiera |
 
 ### Ejemplo de autenticación
 
@@ -152,7 +161,7 @@ curl http://localhost:3000/api/employees \
 - ✅ `.env.example` con todas las variables
 
 ### Módulo 2 — API REST (25 pts)
-- ✅ CRUD completo con códigos HTTP correctos
+- ✅ CRUD completo de empleados, departamentos y puestos
 - ✅ Paginación: `?page=1&limit=10` → `{ data, total, page, totalPages }`
 - ✅ Filtros por nombre, departamento y estado
 - ✅ JWT con expiración de 15 minutos — 401/403 según corresponde
@@ -168,15 +177,17 @@ curl http://localhost:3000/api/employees \
 - ✅ Modal de confirmación para eliminar (foco atrapado — accesible)
 - ✅ Diseño responsivo mobile-first (tabla → cards en móvil)
 - ✅ Dashboard con gráficas (Recharts) — datos desde la API
+- ✅ Control de acceso por rol en UI: admin ve CRUD, viewer ve solo lectura
 
 ### Módulo 4 — Calidad de código (15 pts)
 - ✅ Helpers reutilizables: `pagination.js`, `jwt.js`
 - ✅ `try/catch` con `throw` en todos los servicios
-- ✅ `.env.example` incluido — ningún secreto en el repositorio
+- ✅ `.env.example` incluido — ningún secreto de producción en el repositorio
 
 ### Módulo 5 — Docker y CI/CD (15 pts)
-- ✅ `docker-compose.yml` con servicios `api` + `db` + volumen persistente
-- ✅ Dockerfile multi-stage (`builder` → `production`) — sin devDependencies
+- ✅ `docker-compose.yml` con 3 servicios: `db` + `api` + `frontend`
+- ✅ Backend: Dockerfile multi-stage (`builder` → `production`) sin devDependencies
+- ✅ Frontend: Dockerfile multi-stage (`builder` → `nginx:alpine`)
 - ✅ GitHub Actions: push a `main` → build → push a Docker Hub
 - ✅ Swagger UI en `/api-docs` con todos los endpoints documentados
 
@@ -194,6 +205,7 @@ curl http://localhost:3000/api/employees \
 | `react-hook-form` | Menos re-renders que Formik; API simple con validación integrada |
 | `recharts` | Gráficas declarativas en React sin configuración compleja |
 | `axios` | Interceptores para inyectar token y manejar 401 globalmente |
+| `react-hot-toast` | Notificaciones no bloqueantes que reemplazan alert() del navegador |
 
 ---
 
