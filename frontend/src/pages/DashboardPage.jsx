@@ -26,7 +26,8 @@ const DashboardPage = () => {
       <header className="page-header">
         <h1>Dashboard</h1>
         <div className="header-actions">
-          <Link to="/employees" className="btn btn-secondary">Gestionar empleados</Link>
+          <Link to="/employees" className="btn btn-secondary">Empleados</Link>
+          <Link to="/catalogs" className="btn btn-secondary">Catálogos</Link>
           <span className="user-info">Sesión como <strong>{user?.name}</strong></span>
           <button onClick={() => setShowLogout(true)} className="btn btn-ghost">Cerrar sesión</button>
         </div>

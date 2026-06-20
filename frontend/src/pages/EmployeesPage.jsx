@@ -79,6 +79,7 @@ const EmployeesPage = () => {
         <h1>Empleados</h1>
         <div className="header-actions">
           <Link to="/" className="btn btn-secondary">← Dashboard</Link>
+          <Link to="/catalogs" className="btn btn-secondary">Catálogos</Link>
           <span className="user-info">Sesión como <strong>{user?.name}</strong> · <span className="role-badge">{user?.role}</span></span>
           <button onClick={handleLogout} className="btn btn-ghost">Cerrar sesión</button>
           {user?.role === 'admin' && (

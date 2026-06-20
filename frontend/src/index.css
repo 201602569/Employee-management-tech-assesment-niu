@@ -111,6 +111,12 @@ body { font-family: system-ui, sans-serif; background: var(--gray-50); color: va
 .chart-card { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
 .chart-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
 
+/* Catalogs */
+.catalogs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+.catalog-section { background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.catalog-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.catalog-section-header h2 { font-size: 18px; font-weight: 600; margin: 0; }
+
 /* Responsive */
 @media (max-width: 640px) {
   .table-wrapper { display: none; }
