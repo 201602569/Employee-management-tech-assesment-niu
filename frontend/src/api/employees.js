@@ -6,5 +6,6 @@ export const createEmployee = (data) => api.post('/employees', data);
 export const updateEmployee = (id, data) => api.put(`/employees/${id}`, data);
 export const deleteEmployee = (id) => api.delete(`/employees/${id}`);
 export const getDepartments = () => api.get('/departments');
+export const getRoles = () => api.get('/roles');
 export const getStats = () => api.get('/stats');
 export const login = (data) => api.post('/auth/login', data);

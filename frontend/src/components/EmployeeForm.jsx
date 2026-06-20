@@ -1,15 +1,17 @@
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { getDepartments } from '../api/employees';
+import { getDepartments, getRoles } from '../api/employees';
 
 const PHONE_REGEX = /^\d{7,15}$/;
 
 const EmployeeForm = ({ defaultValues, onSubmit, onCancel, loading }) => {
   const [departments, setDepartments] = useState([]);
+  const [roles, setRoles] = useState([]);
   const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues });
 
   useEffect(() => {
     getDepartments().then((r) => setDepartments(r.data));
+    getRoles().then((r) => setRoles(r.data));
   }, []);
 
   useEffect(() => {
@@ -59,17 +61,28 @@ const EmployeeForm = ({ defaultValues, onSubmit, onCancel, loading }) => {
           </select>
         </div>
         <div className="form-group">
+          <label>Cargo</label>
+          <select {...register('role_id')}>
+            <option value="">-- Seleccionar --</option>
+            {roles.map((r) => (
+              <option key={r.id} value={r.id}>{r.name}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
           <label>Estado</label>
           <select {...register('status')}>
             <option value="active">Activo</option>
             <option value="inactive">Inactivo</option>
           </select>
         </div>
-      </div>
-
-      <div className="form-group">
-        <label>Fecha de contratación</label>
-        <input type="date" {...register('hire_date')} />
+        <div className="form-group">
+          <label>Fecha de contratación</label>
+          <input type="date" {...register('hire_date')} />
+        </div>
       </div>
 
       <div className="form-actions">

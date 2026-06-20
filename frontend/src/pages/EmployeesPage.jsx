@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { getEmployees, getDepartments, createEmployee, updateEmployee, deleteEmployee } from '../api/employees';
 import { useAuth } from '../context/AuthContext';
 import useDebounce from '../hooks/useDebounce';
@@ -40,8 +41,9 @@ const EmployeesPage = () => {
       await createEmployee(data);
       setModal(null);
       fetchEmployees();
+      toast.success('Empleado creado exitosamente');
     } catch (err) {
-      alert(err.response?.data?.message || 'Error al crear el empleado');
+      toast.error(err.response?.data?.message || 'Error al crear el empleado');
     } finally { setFormLoading(false); }
   };
 
@@ -51,8 +53,9 @@ const EmployeesPage = () => {
       await updateEmployee(modal.data.id, data);
       setModal(null);
       fetchEmployees();
+      toast.success('Empleado actualizado exitosamente');
     } catch (err) {
-      alert(err.response?.data?.message || 'Error al actualizar el empleado');
+      toast.error(err.response?.data?.message || 'Error al actualizar el empleado');
     } finally { setFormLoading(false); }
   };
 
@@ -65,7 +68,10 @@ const EmployeesPage = () => {
       await deleteEmployee(modal.data.id);
       setModal(null);
       fetchEmployees();
-    } catch { alert('Error al eliminar el empleado'); }
+      toast.success('Empleado eliminado');
+    } catch {
+      toast.error('Error al eliminar el empleado');
+    }
   };
 
   return (
