@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { body } = require('express-validator');
-const { authenticate } = require('../middlewares/auth');
+const { authenticate, authorize } = require('../middlewares/auth');
 const validate = require('../middlewares/validate');
 const employeeService = require('../services/employee.service');
 
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-router.post('/', employeeValidation, validate, async (req, res, next) => {
+router.post('/', authorize('admin'), employeeValidation, validate, async (req, res, next) => {
   try {
     const employee = await employeeService.create(req.body);
     res.status(201).json(employee);
@@ -44,7 +44,7 @@ router.post('/', employeeValidation, validate, async (req, res, next) => {
   }
 });
 
-router.put('/:id', employeeValidation, validate, async (req, res, next) => {
+router.put('/:id', authorize('admin'), employeeValidation, validate, async (req, res, next) => {
   try {
     const employee = await employeeService.update(req.params.id, req.body);
     res.json(employee);
@@ -53,7 +53,7 @@ router.put('/:id', employeeValidation, validate, async (req, res, next) => {
   }
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', authorize('admin'), async (req, res, next) => {
   try {
     await employeeService.remove(req.params.id);
     res.status(204).send();

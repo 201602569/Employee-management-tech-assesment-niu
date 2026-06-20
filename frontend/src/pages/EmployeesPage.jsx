@@ -74,11 +74,13 @@ const EmployeesPage = () => {
         <h1>Empleados</h1>
         <div className="header-actions">
           <Link to="/" className="btn btn-secondary">← Dashboard</Link>
-          <span className="user-info">Sesión como <strong>{user?.name}</strong></span>
+          <span className="user-info">Sesión como <strong>{user?.name}</strong> · <span className="role-badge">{user?.role}</span></span>
           <button onClick={handleLogout} className="btn btn-ghost">Cerrar sesión</button>
-          <button onClick={() => setModal({ type: 'form', data: null })} className="btn btn-primary">
-            + Nuevo empleado
-          </button>
+          {user?.role === 'admin' && (
+            <button onClick={() => setModal({ type: 'form', data: null })} className="btn btn-primary">
+              + Nuevo empleado
+            </button>
+          )}
         </div>
       </header>
 
@@ -119,8 +121,11 @@ const EmployeesPage = () => {
                 <td>{emp.role?.name || '—'}</td>
                 <td><span className={`badge badge-${emp.status}`}>{emp.status === 'active' ? 'Activo' : 'Inactivo'}</span></td>
                 <td>
-                  <button onClick={() => setModal({ type: 'form', data: emp })} className="btn btn-sm btn-secondary">Editar</button>
-                  <button onClick={() => setModal({ type: 'delete', data: emp })} className="btn btn-sm btn-danger">Eliminar</button>
+                  {user?.role === 'admin' && <>
+                    <button onClick={() => setModal({ type: 'form', data: emp })} className="btn btn-sm btn-secondary">Editar</button>
+                    <button onClick={() => setModal({ type: 'delete', data: emp })} className="btn btn-sm btn-danger">Eliminar</button>
+                  </>}
+                  {user?.role !== 'admin' && <span style={{color:'#9ca3af', fontSize:'13px'}}>Solo lectura</span>}
                 </td>
               </tr>
             ))}
@@ -141,10 +146,12 @@ const EmployeesPage = () => {
             </div>
             <p>{emp.email}</p>
             <p>{emp.department?.name} · {emp.role?.name}</p>
-            <div className="card-actions">
-              <button onClick={() => setModal({ type: 'form', data: emp })} className="btn btn-sm btn-secondary">Editar</button>
-              <button onClick={() => setModal({ type: 'delete', data: emp })} className="btn btn-sm btn-danger">Eliminar</button>
-            </div>
+            {user?.role === 'admin' && (
+              <div className="card-actions">
+                <button onClick={() => setModal({ type: 'form', data: emp })} className="btn btn-sm btn-secondary">Editar</button>
+                <button onClick={() => setModal({ type: 'delete', data: emp })} className="btn btn-sm btn-danger">Eliminar</button>
+              </div>
+            )}
           </div>
         ))}
         {employees.length === 0 && <p className="empty">No se encontraron empleados</p>}

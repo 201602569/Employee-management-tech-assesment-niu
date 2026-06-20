@@ -48,6 +48,7 @@ body { font-family: system-ui, sans-serif; background: var(--gray-50); color: va
 .page-header h1 { font-size: 24px; font-weight: 700; }
 .header-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .user-info { font-size: 14px; color: var(--gray-600); }
+.role-badge { background: var(--gray-100); color: var(--gray-600); padding: 2px 8px; border-radius: 99px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
 
 /* Filters */
 .filters { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
