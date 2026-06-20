@@ -250,6 +250,16 @@ El pipeline se dispara automáticamente en cada push a `main`.
 
 ---
 
-## Diagrama ER
+## Diagramas
 
+### Entidad-Relación (ER)
 ![ER Diagram](./docs/ER-diagram.png)
+
+### Clases UML
+![Class Diagram](./docs/uml-class.png)
+
+### Secuencia UML — Flujo de autenticación JWT
+![Sequence Diagram](./docs/uml-sequence.png)
+
+### Casos de Uso UML
+![Use Case Diagram](./docs/uml-usecase.png)
