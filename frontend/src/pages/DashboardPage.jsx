@@ -8,6 +8,9 @@ const COLORS = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#14b8a6'];
 
 const DashboardPage = () => {
   const { user, logout } = useAuth();
+  const handleLogout = () => {
+    if (window.confirm('¿Estás seguro de que deseas cerrar sesión?')) logout();
+  };
   const [stats, setStats] = useState(null);
 
   useEffect(() => { getStats().then((r) => setStats(r.data)); }, []);
@@ -26,7 +29,7 @@ const DashboardPage = () => {
         <div className="header-actions">
           <Link to="/employees" className="btn btn-secondary">Gestionar empleados</Link>
           <span className="user-info">Sesión como <strong>{user?.name}</strong></span>
-          <button onClick={logout} className="btn btn-ghost">Cerrar sesión</button>
+          <button onClick={handleLogout} className="btn btn-ghost">Cerrar sesión</button>
         </div>
       </header>
 

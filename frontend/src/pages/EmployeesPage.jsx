@@ -56,6 +56,10 @@ const EmployeesPage = () => {
     } finally { setFormLoading(false); }
   };
 
+  const handleLogout = () => {
+    if (window.confirm('¿Estás seguro de que deseas cerrar sesión?')) logout();
+  };
+
   const handleDelete = async () => {
     try {
       await deleteEmployee(modal.data.id);
@@ -71,7 +75,7 @@ const EmployeesPage = () => {
         <div className="header-actions">
           <Link to="/" className="btn btn-secondary">← Dashboard</Link>
           <span className="user-info">Sesión como <strong>{user?.name}</strong></span>
-          <button onClick={logout} className="btn btn-ghost">Cerrar sesión</button>
+          <button onClick={handleLogout} className="btn btn-ghost">Cerrar sesión</button>
           <button onClick={() => setModal({ type: 'form', data: null })} className="btn btn-primary">
             + Nuevo empleado
           </button>
