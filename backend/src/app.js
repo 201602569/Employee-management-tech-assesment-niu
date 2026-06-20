@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
-const { sequelize } = require('../models');
 const errorHandler = require('./middlewares/errorHandler');
 const swaggerSpec = require('./config/swagger');
 
@@ -25,17 +24,5 @@ app.use('/api/roles', roleRoutes);
 app.use('/api/stats', statsRoutes);
 
 app.use(errorHandler);
-
-const PORT = process.env.PORT || 3000;
-
-sequelize.authenticate()
-  .then(() => {
-    console.log('Database connected.');
-    app.listen(PORT, () => console.log(`API running on port ${PORT}`));
-  })
-  .catch((err) => {
-    console.error('Unable to connect to database:', err);
-    process.exit(1);
-  });
 
 module.exports = app;

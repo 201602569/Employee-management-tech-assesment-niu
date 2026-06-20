@@ -115,6 +115,35 @@ npm run dev         # Puerto 5173
 
 ---
 
+## Pruebas unitarias
+
+### Backend (Jest)
+
+```bash
+cd backend
+npm install
+npm test
+```
+
+| Suite | Tests | Qué cubre |
+|-------|-------|-----------|
+| `pagination.test.js` | 6 | Paginación y cálculo de offsets |
+| `auth.middleware.test.js` | 10 | Middleware de autenticación y autorización JWT |
+
+### Frontend (Vitest)
+
+```bash
+cd frontend
+npm install
+npm test
+```
+
+| Suite | Tests | Qué cubre |
+|-------|-------|-----------|
+| `useDebounce.test.js` | 4 | Hook de debounce con timers simulados |
+
+---
+
 ## API Endpoints
 
 La documentación completa con ejemplos está disponible en **Swagger UI**: `http://localhost:3000/api-docs`

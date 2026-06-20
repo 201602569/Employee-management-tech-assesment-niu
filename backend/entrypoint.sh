@@ -11,4 +11,4 @@ echo "Running seeds..."
 npx sequelize-cli db:seed:all --config config/config.js 2>/dev/null || true
 
 echo "Starting API..."
-exec node src/app.js
+exec node src/server.js
