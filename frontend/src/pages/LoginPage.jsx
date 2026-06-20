@@ -19,8 +19,8 @@ const LoginPage = () => {
       saveAuth(res.data.token, res.data.user);
       navigate('/');
     } catch (err) {
-      const msg = err.response?.data?.message || 'Login failed';
-      setServerError(err.response?.status === 401 ? 'Invalid email or password' : msg);
+      const msg = err.response?.data?.message || 'Error al iniciar sesión';
+      setServerError(err.response?.status === 401 ? 'Correo o contraseña incorrectos' : msg);
     } finally {
       setLoading(false);
     }
@@ -29,27 +29,27 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Employee Management</h1>
-        <p className="login-subtitle">Sign in to your account</p>
+        <h1>Gestión de Empleados</h1>
+        <p className="login-subtitle">Inicia sesión en tu cuenta</p>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="form-group">
-            <label>Email <span className="required">*</span></label>
+            <label>Correo electrónico <span className="required">*</span></label>
             <input
               type="email"
               {...register('email', {
-                required: 'Email is required',
-                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email' },
+                required: 'El correo es requerido',
+                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Ingresa un correo válido' },
               })}
             />
             {errors.email && <span className="error">{errors.email.message}</span>}
           </div>
 
           <div className="form-group">
-            <label>Password <span className="required">*</span></label>
+            <label>Contraseña <span className="required">*</span></label>
             <input
               type="password"
-              {...register('password', { required: 'Password is required' })}
+              {...register('password', { required: 'La contraseña es requerida' })}
             />
             {errors.password && <span className="error">{errors.password.message}</span>}
           </div>
@@ -57,7 +57,7 @@ const LoginPage = () => {
           {serverError && <div className="alert alert-error">{serverError}</div>}
 
           <button type="submit" disabled={loading} className="btn btn-primary btn-full">
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </button>
         </form>
 
