@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import useDebounce from '../hooks/useDebounce';
 import EmployeeForm from '../components/EmployeeForm';
 import DeleteModal from '../components/DeleteModal';
+import LogoutModal from '../components/LogoutModal';
 
 const EmployeesPage = () => {
   const { user, logout } = useAuth();
@@ -59,9 +60,7 @@ const EmployeesPage = () => {
     } finally { setFormLoading(false); }
   };
 
-  const handleLogout = () => {
-    if (window.confirm('¿Estás seguro de que deseas cerrar sesión?')) logout();
-  };
+  const handleLogout = () => setModal({ type: 'logout' });
 
   const handleDelete = async () => {
     try {
@@ -189,6 +188,10 @@ const EmployeesPage = () => {
           onConfirm={handleDelete}
           onCancel={() => setModal(null)}
         />
+      )}
+
+      {modal?.type === 'logout' && (
+        <LogoutModal onConfirm={logout} onCancel={() => setModal(null)} />
       )}
     </div>
   );
