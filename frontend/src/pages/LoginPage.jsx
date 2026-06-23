@@ -29,7 +29,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Gestión de Empleados</h1>
+        <h1>Prueba Tecnica 2026</h1>
         <p className="login-subtitle">Inicia sesión en tu cuenta</p>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
